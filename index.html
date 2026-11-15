@@ -1,96 +1,92 @@
-<button id="copy" class="secondary" style="display:none" onclick="copyResult()">Copy Prompt</button>
-  </div>
- </section>
-</main>
-<footer>AI Creative Studio Pro · Your ideas, professionally crafted.</footer>
-
-<script>
-function generate(){
- const product=document.getElementById("product").value.trim();
- const type=document.getElementById("type").value;
- const style=document.getElementById("style").value;
- const duration=document.getElementById("duration").value;
- const platform=document.getElementById("platform").value;
- const quality=document.getElementById("quality").value;
- const idea=document.getElementById("idea").value.trim();
-
- if(!product){
-  alert("Please enter your project or product name.");
-  return;
- }
-
- const prompt=`AI CREATIVE STUDIO PRO
+<!DOCTYPE html> <html lang="en">
+<head>   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">   <meta name="theme-color" content="#080d1c">
+  <title>AI Creative Studio Pro</title>   <style>
+    * { box-sizing: border-box; }     body { margin:0; padding:30px 16px; min-height:100vh; font-family:Arial,sans-serif; color:#fff; background:linear-gradient(135deg,#080d1c,#172554); }
+    .container { max-width:760px; margin:0 auto; }     header { text-align:center; margin:25px 0 35px; }
+    h1 { font-size:34px; margin-bottom:10px; }     header p, footer { color:#aab7d4; }
+    .card { padding:25px; border-radius:18px; background:#111c33; border:1px solid #344365; }     label { display:block; margin:17px 0 8px; font-weight:bold; }
+    input,select,textarea { width:100%; padding:14px; border-radius:9px; border:1px solid #435477; background:#0b1428; color:white; font-size:15px; }     textarea { resize:vertical; }
+    button { width:100%; padding:15px; margin-top:22px; border:0; border-radius:10px; color:white; background:linear-gradient(90deg,#6366f1,#a855f7); font-size:17px; font-weight:bold; cursor:pointer; }     button:hover { opacity:.88; }
+    #output { display:none; white-space:pre-wrap; overflow-wrap:anywhere; background:#080f20; padding:18px; border-radius:10px; margin-top:20px; line-height:1.7; }     .secondary { background:#263858; }
+    footer { text-align:center; margin-top:25px; }     @media(max-width:480px) { body{padding:18px 12px;} h1{font-size:28px;} .card{padding:18px;} }
+  </style> </head>
+<body>   <main class="container">
+    <header>       <h1>✨ AI Creative Studio Pro</h1>
+      <p>Create professional AI video, image and advertising prompts.</p>     </header>
+    <section class="card">       <h2>Creative Project Generator</h2>
+      <label for="product">Project or Product Name</label>       <input id="product" placeholder="Example: Luxury Watch">
+      <label for="type">Content Type</label>       <select id="type">
+        <option>Product Advertisement</option><option>Cinematic Video</option>         <option>AI Image</option><option>Football Documentary</option>
+        <option>Instagram Reel</option><option>TikTok Advertisement</option>       </select>
+      <label for="style">Visual Style</label>       <select id="style">
+        <option>Cinematic Realistic</option><option>Luxury Commercial</option>         <option>Hollywood Documentary</option><option>Ultra Realistic</option>
+        <option>Futuristic</option>       </select>
+      <label for="duration">Duration</label>       <select id="duration">
+        <option>15 Seconds</option><option selected>30 Seconds</option>         <option>60 Seconds</option><option>90 Seconds</option>
+      </select>       <label for="platform">Platform</label>
+      <select id="platform">         <option>TikTok 9:16</option><option>Instagram Reels 9:16</option>
+        <option>YouTube 16:9</option><option>Facebook</option>       </select>
+      <label for="quality">Quality</label>       <select id="quality">
+        <option>4K Ultra HD</option><option>1080p Full HD</option>         <option>8K Ultra HD</option>
+      </select>       <label for="idea">Additional Instructions</label>
+      <textarea id="idea" rows="4" placeholder="Describe your creative idea..."></textarea>       <button type="button" onclick="generate()">Generate Professional Prompt</button>
+      <div id="output"></div>       <button id="copy" class="secondary" type="button" style="display:none" onclick="copyResult()">Copy Prompt</button>
+    </section>
+    <footer>AI Creative Studio Pro · Your ideas, professionally crafted.</footer>
+  </main>
+  <script>
+    function generate() {
+      const product=document.getElementById("product").value.trim();
+      const type=document.getElementById("type").value;
+      const style=document.getElementById("style").value;
+      const duration=document.getElementById("duration").value;
+      const platform=document.getElementById("platform").value;
+      const quality=document.getElementById("quality").value;
+      const idea=document.getElementById("idea").value.trim();
+      if(!product){ alert("Please enter your project or product name."); return; }
+      const prompt=`AI CREATIVE STUDIO PRO
 PROFESSIONAL PRODUCTION BRIEF
-
 PROJECT: ${product}
 CONTENT TYPE: ${type}
 VISUAL STYLE: ${style}
 DURATION: ${duration}
 PLATFORM: ${platform}
 QUALITY: ${quality}
-
 CREATIVE CONCEPT:
-${idea || "Create an original, powerful and emotionally engaging concept about "+product+"."}
-
-VISUAL DIRECTION:
-- Hollywood cinematic realism.
-- Ultra realistic details and textures.
-- Professional lighting and composition.
-- Dynamic cinematic camera movements.
-- Premium color grading.
-- Beautiful cinematic transitions.
-- Emotional visual storytelling.
-
-SCENE-BY-SCENE DIRECTION:
-1. Cinematic opening that immediately captures attention.
-2. Beautiful visual reveal of the main subject.
-3. Showcase the main subject and its most important features.
-4. Premium cinematic close-ups and dynamic camera angles.
-5. Powerful emotional ending with a memorable final message.
-
+Create an original, powerful and emotionally engaging production about ${product}.
+${idea || "Develop a unique professional creative concept."}
+SCENE DIRECTION:
+1. Powerful cinematic opening.
+2. Beautiful visual reveal.
+3. Showcase the main subject.
+4. Premium cinematic close-ups.
+5. Strong emotional final scene.
 CAMERA:
-- Smooth tracking shots.
-- Professional depth of field.
-- Realistic motion and lighting.
-- High-end cinematic composition.
-
-AUDIO:
-- Professional music direction.
-- Immersive sound effects.
-- English professional voice-over.
-- Clear and memorable narration.
-
+- Smooth tracking shots and dynamic camera movements.
+- Professional depth of field, realistic motion and lighting.
 PRODUCTION QUALITY:
-- ${quality} target resolution.
-- Sharp focus and realistic details.
-- Consistent subjects and visual continuity.
-- Professional editing and transitions.
-
+- ${quality} target resolution, sharp focus and realistic details.
+- Consistent subjects, visual continuity and professional editing.
 DELIVERABLES:
-1. Complete creative concept.
-2. Detailed scene-by-scene prompts.
-3. Camera and lighting directions.
-4. English voice-over script.
-5. Music and sound design suggestions.
-6. Final advertising message.
-7. Negative prompt to avoid visual errors.
-
+1. Complete creative concept and detailed scene-by-scene prompts.
+2. Camera, lighting, music and sound design directions.
+3. English voice-over script and final advertising message.
+4. Negative prompt to avoid visual errors.
 IMPORTANT:
 Maintain consistent subjects, realistic details and professional production quality throughout.
-
 Create an unforgettable professional production.`;
-
- document.getElementById("output").textContent=prompt;
- document.getElementById("output").style.display="block";
- document.getElementById("copy").style.display="inline-block";
-}
-
-function copyResult(){
- const text=document.getElementById("output").textContent;
- navigator.clipboard.writeText(text)
- .then(()=>alert("Prompt copied successfully!"))
- .catch(()=>alert("Please select and copy the prompt manually."));
-}
-</script>
+      document.getElementById("output").textContent=prompt;
+      document.getElementById("output").style.display="block";
+      document.getElementById("copy").style.display="block";
+    }
+    function copyResult() {
+      const text=document.getElementById("output").textContent;
+      if(navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(()=>alert("Prompt copied successfully!"))
+          .catch(()=>alert("Please select and copy the prompt manually."));
+      } else { alert("Please select and copy the prompt manually."); }
+    }
+  </script>
 </body>
 </html>
