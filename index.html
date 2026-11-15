@@ -1,0 +1,45 @@
+SCENE DIRECTION:
+1. Powerful cinematic opening.
+2. Beautiful visual reveal.
+3. Showcase the main subject.
+4. Premium cinematic close-ups.
+5. Strong emotional final scene.
+
+CAMERA:
+- Smooth tracking shots.
+- Dynamic camera movements.
+- Professional depth of field.
+- Realistic motion and lighting.
+
+DELIVERABLES:
+1. Complete creative concept.
+2. Detailed scene-by-scene prompts.
+3. Professional camera directions.
+4. Lighting and visual effects.
+5. English voice-over script.
+6. Music and sound design suggestions.
+7. Final advertising message.
+8. Negative prompt to avoid visual errors.
+
+IMPORTANT:
+Maintain consistent subjects, realistic details,
+professional production quality and visual continuity.
+
+Create an unforgettable professional production.
+`;
+
+document.getElementById("output").textContent=prompt;
+document.getElementById("output").style.display="block";
+document.getElementById("copy").style.display="inline-block";
+}
+
+function copyPrompt(){
+const text=document.getElementById("output").textContent;
+navigator.clipboard.writeText(text)
+.then(()=>alert("Prompt copied successfully!"))
+.catch(()=>alert("Please select and copy the prompt manually."));
+}
+</script>
+
+</body>
+</html>
