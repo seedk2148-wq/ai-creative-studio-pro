@@ -1,45 +1,96 @@
-SCENE DIRECTION:
-1. Powerful cinematic opening.
-2. Beautiful visual reveal.
-3. Showcase the main subject.
-4. Premium cinematic close-ups.
-5. Strong emotional final scene.
+<button id="copy" class="secondary" style="display:none" onclick="copyResult()">Copy Prompt</button>
+  </div>
+ </section>
+</main>
+<footer>AI Creative Studio Pro · Your ideas, professionally crafted.</footer>
+
+<script>
+function generate(){
+ const product=document.getElementById("product").value.trim();
+ const type=document.getElementById("type").value;
+ const style=document.getElementById("style").value;
+ const duration=document.getElementById("duration").value;
+ const platform=document.getElementById("platform").value;
+ const quality=document.getElementById("quality").value;
+ const idea=document.getElementById("idea").value.trim();
+
+ if(!product){
+  alert("Please enter your project or product name.");
+  return;
+ }
+
+ const prompt=`AI CREATIVE STUDIO PRO
+PROFESSIONAL PRODUCTION BRIEF
+
+PROJECT: ${product}
+CONTENT TYPE: ${type}
+VISUAL STYLE: ${style}
+DURATION: ${duration}
+PLATFORM: ${platform}
+QUALITY: ${quality}
+
+CREATIVE CONCEPT:
+${idea || "Create an original, powerful and emotionally engaging concept about "+product+"."}
+
+VISUAL DIRECTION:
+- Hollywood cinematic realism.
+- Ultra realistic details and textures.
+- Professional lighting and composition.
+- Dynamic cinematic camera movements.
+- Premium color grading.
+- Beautiful cinematic transitions.
+- Emotional visual storytelling.
+
+SCENE-BY-SCENE DIRECTION:
+1. Cinematic opening that immediately captures attention.
+2. Beautiful visual reveal of the main subject.
+3. Showcase the main subject and its most important features.
+4. Premium cinematic close-ups and dynamic camera angles.
+5. Powerful emotional ending with a memorable final message.
 
 CAMERA:
 - Smooth tracking shots.
-- Dynamic camera movements.
 - Professional depth of field.
 - Realistic motion and lighting.
+- High-end cinematic composition.
+
+AUDIO:
+- Professional music direction.
+- Immersive sound effects.
+- English professional voice-over.
+- Clear and memorable narration.
+
+PRODUCTION QUALITY:
+- ${quality} target resolution.
+- Sharp focus and realistic details.
+- Consistent subjects and visual continuity.
+- Professional editing and transitions.
 
 DELIVERABLES:
 1. Complete creative concept.
 2. Detailed scene-by-scene prompts.
-3. Professional camera directions.
-4. Lighting and visual effects.
-5. English voice-over script.
-6. Music and sound design suggestions.
-7. Final advertising message.
-8. Negative prompt to avoid visual errors.
+3. Camera and lighting directions.
+4. English voice-over script.
+5. Music and sound design suggestions.
+6. Final advertising message.
+7. Negative prompt to avoid visual errors.
 
 IMPORTANT:
-Maintain consistent subjects, realistic details,
-professional production quality and visual continuity.
+Maintain consistent subjects, realistic details and professional production quality throughout.
 
-Create an unforgettable professional production.
-`;
+Create an unforgettable professional production.`;
 
-document.getElementById("output").textContent=prompt;
-document.getElementById("output").style.display="block";
-document.getElementById("copy").style.display="inline-block";
+ document.getElementById("output").textContent=prompt;
+ document.getElementById("output").style.display="block";
+ document.getElementById("copy").style.display="inline-block";
 }
 
-function copyPrompt(){
-const text=document.getElementById("output").textContent;
-navigator.clipboard.writeText(text)
-.then(()=>alert("Prompt copied successfully!"))
-.catch(()=>alert("Please select and copy the prompt manually."));
+function copyResult(){
+ const text=document.getElementById("output").textContent;
+ navigator.clipboard.writeText(text)
+ .then(()=>alert("Prompt copied successfully!"))
+ .catch(()=>alert("Please select and copy the prompt manually."));
 }
 </script>
-
 </body>
 </html>
