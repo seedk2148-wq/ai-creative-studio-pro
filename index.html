@@ -1,92 +1,474 @@
-<!DOCTYPE html> <html lang="en">
-<head>   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">   <meta name="theme-color" content="#080d1c">
-  <title>AI Creative Studio Pro</title>   <style>
-    * { box-sizing: border-box; }     body { margin:0; padding:30px 16px; min-height:100vh; font-family:Arial,sans-serif; color:#fff; background:linear-gradient(135deg,#080d1c,#172554); }
-    .container { max-width:760px; margin:0 auto; }     header { text-align:center; margin:25px 0 35px; }
-    h1 { font-size:34px; margin-bottom:10px; }     header p, footer { color:#aab7d4; }
-    .card { padding:25px; border-radius:18px; background:#111c33; border:1px solid #344365; }     label { display:block; margin:17px 0 8px; font-weight:bold; }
-    input,select,textarea { width:100%; padding:14px; border-radius:9px; border:1px solid #435477; background:#0b1428; color:white; font-size:15px; }     textarea { resize:vertical; }
-    button { width:100%; padding:15px; margin-top:22px; border:0; border-radius:10px; color:white; background:linear-gradient(90deg,#6366f1,#a855f7); font-size:17px; font-weight:bold; cursor:pointer; }     button:hover { opacity:.88; }
-    #output { display:none; white-space:pre-wrap; overflow-wrap:anywhere; background:#080f20; padding:18px; border-radius:10px; margin-top:20px; line-height:1.7; }     .secondary { background:#263858; }
-    footer { text-align:center; margin-top:25px; }     @media(max-width:480px) { body{padding:18px 12px;} h1{font-size:28px;} .card{padding:18px;} }
-  </style> </head>
-<body>   <main class="container">
-    <header>       <h1>✨ AI Creative Studio Pro</h1>
-      <p>Create professional AI video, image and advertising prompts.</p>     </header>
-    <section class="card">       <h2>Creative Project Generator</h2>
-      <label for="product">Project or Product Name</label>       <input id="product" placeholder="Example: Luxury Watch">
-      <label for="type">Content Type</label>       <select id="type">
-        <option>Product Advertisement</option><option>Cinematic Video</option>         <option>AI Image</option><option>Football Documentary</option>
-        <option>Instagram Reel</option><option>TikTok Advertisement</option>       </select>
-      <label for="style">Visual Style</label>       <select id="style">
-        <option>Cinematic Realistic</option><option>Luxury Commercial</option>         <option>Hollywood Documentary</option><option>Ultra Realistic</option>
-        <option>Futuristic</option>       </select>
-      <label for="duration">Duration</label>       <select id="duration">
-        <option>15 Seconds</option><option selected>30 Seconds</option>         <option>60 Seconds</option><option>90 Seconds</option>
-      </select>       <label for="platform">Platform</label>
-      <select id="platform">         <option>TikTok 9:16</option><option>Instagram Reels 9:16</option>
-        <option>YouTube 16:9</option><option>Facebook</option>       </select>
-      <label for="quality">Quality</label>       <select id="quality">
-        <option>4K Ultra HD</option><option>1080p Full HD</option>         <option>8K Ultra HD</option>
-      </select>       <label for="idea">Additional Instructions</label>
-      <textarea id="idea" rows="4" placeholder="Describe your creative idea..."></textarea>       <button type="button" onclick="generate()">Generate Professional Prompt</button>
-      <div id="output"></div>       <button id="copy" class="secondary" type="button" style="display:none" onclick="copyResult()">Copy Prompt</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11152f">
+<title>AI Creative Studio Pro</title>
+<style>
+:root{--bg:#090d20;--panel:#151c3d;--panel2:#101733;--line:#34416f;--text:#f5f7ff;--muted:#b7c1e4;--accent:#7667ff;--accent2:#20c7d9;--good:#35c98b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:30px 16px 50px;background:radial-gradient(ellipse at top,#263a91 0,#101943 38%,#080c1d 100%);font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+.container{max-width:900px;margin:0 auto}
+header{text-align:center;margin:8px 0 28px}
+h1{font-size:clamp(28px,5vw,42px);margin:0 0 10px;letter-spacing:-.7px}
+header p{color:#d5dcff;margin:0;font-size:15px}
+.topbar{display:flex;justify-content:flex-end;margin-bottom:12px}
+.lang{background:#202a56;border:1px solid #6574b3;color:white;border-radius:10px;padding:9px 13px;cursor:pointer}
+.card{background:linear-gradient(145deg,rgba(26,35,78,.97),rgba(14,21,49,.98));border:1px solid #5364a0;border-radius:20px;padding:clamp(18px,4vw,32px);box-shadow:0 22px 60px #0005}
+h2{font-size:22px;margin:0 0 22px}
+.field{margin:0 0 17px}
+label{display:block;font-weight:700;font-size:14px;margin:0 0 8px;color:#eef1ff}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #6574a6;border-radius:10px;background:#0d1533;color:#fff;font-size:15px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#9b91ff;box-shadow:0 0 0 3px #7667ff30}
+select option{background:#101733}
+textarea{min-height:105px;resize:vertical}
+::placeholder{color:#aab4d4}
+button{font-weight:700;border:0;border-radius:11px;padding:14px 18px;cursor:pointer;font-size:15px;transition:transform .12s,filter .12s}
+button:hover{filter:brightness(1.1)}
+button:active{transform:scale(.99)}
+.primary{width:100%;color:white;background:linear-gradient(90deg,var(--accent),#4e8dff);margin-top:5px}
+.secondary{background:#253463;color:white;border:1px solid #6476b7}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.actions button{flex:1;min-width:150px}
+#resultSection{display:none;margin-top:22px}
+.resultHead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.resultHead h2{margin:0}
+.status{color:#9cebc9;font-size:13px}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;background:#080e25;border:1px solid #43558d;border-radius:12px;padding:18px;max-height:650px;overflow:auto;font-size:14px}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin:15px 2px 0}
+footer{text-align:center;color:#aeb9e2;font-size:13px;margin:22px 0 0}
+@media(max-width:520px){
+body{padding:18px 11px 35px}
+.card{border-radius:15px}
+.actions{flex-direction:column}
+.actions button{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <button class="lang" id="langBtn" type="button">العربية</button>
+  </div>
+
+  <header>
+    <h1>✨ AI Creative Studio Pro</h1>
+    <p id="subtitle">Create professional AI video, image and advertising prompts.</p>
+  </header>
+
+  <main class="card">
+    <h2 id="formTitle">Creative Project Generator</h2>
+
+    <form id="generatorForm">
+      <div class="field">
+        <label for="product" id="productLabel">Project or Product Name</label>
+        <input id="product" required maxlength="120" placeholder="Example: Luxury Watch">
+      </div>
+
+      <div class="field">
+        <label for="type" id="typeLabel">Content Type</label>
+        <select id="type">
+          <option>Product Advertisement</option>
+          <option>Cinematic Video</option>
+          <option>Instagram Reel</option>
+          <option>TikTok Advertisement</option>
+          <option>AI Image</option>
+          <option>Brand Story</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style" id="styleLabel">Visual Style</label>
+        <select id="style">
+          <option>Cinematic Realistic</option>
+          <option>Luxury Commercial</option>
+          <option>Futuristic</option>
+          <option>Documentary</option>
+          <option>Minimalist Premium</option>
+          <option>Energetic Social Media</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="duration" id="durationLabel">Duration</label>
+        <select id="duration">
+          <option value="15">15 Seconds</option>
+          <option value="30" selected>30 Seconds</option>
+          <option value="45">45 Seconds</option>
+          <option value="60">60 Seconds</option>
+          <option value="90">90 Seconds</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="platform" id="platformLabel">Platform</label>
+        <select id="platform">
+          <option>TikTok 9:16</option>
+          <option>Instagram Reels 9:16</option>
+          <option>YouTube 16:9</option>
+          <option>Facebook</option>
+          <option>Website 16:9</option>
+          <option>Square 1:1</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="quality" id="qualityLabel">Quality Target</label>
+        <select id="quality">
+          <option>4K Ultra HD</option>
+          <option>1080p Full HD</option>
+          <option>8K Ultra HD</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="idea" id="ideaLabel">Additional Instructions</label>
+        <textarea id="idea" placeholder="Describe your creative idea, audience, product features, offer or call to action..."></textarea>
+      </div>
+
+      <button class="primary" type="submit" id="generateBtn">
+        Generate Professional Prompt
+      </button>
+    </form>
+
+    <section id="resultSection">
+      <div class="resultHead">
+        <h2 id="resultTitle">Your Production Prompt</h2>
+        <span class="status" id="status"></span>
+      </div>
+
+      <div class="output" id="output" aria-live="polite"></div>
+
+      <div class="actions">
+        <button class="secondary" type="button" id="copyBtn">Copy Prompt</button>
+        <button class="secondary" type="button" id="downloadBtn">Download TXT</button>
+        <button class="secondary" type="button" id="resetBtn">New Project</button>
+      </div>
     </section>
-    <footer>AI Creative Studio Pro · Your ideas, professionally crafted.</footer>
   </main>
-  <script>
-    function generate() {
-      const product=document.getElementById("product").value.trim();
-      const type=document.getElementById("type").value;
-      const style=document.getElementById("style").value;
-      const duration=document.getElementById("duration").value;
-      const platform=document.getElementById("platform").value;
-      const quality=document.getElementById("quality").value;
-      const idea=document.getElementById("idea").value.trim();
-      if(!product){ alert("Please enter your project or product name."); return; }
-      const prompt=`AI CREATIVE STUDIO PRO
-PROFESSIONAL PRODUCTION BRIEF
-PROJECT: ${product}
-CONTENT TYPE: ${type}
-VISUAL STYLE: ${style}
-DURATION: ${duration}
-PLATFORM: ${platform}
-QUALITY: ${quality}
-CREATIVE CONCEPT:
-Create an original, powerful and emotionally engaging production about ${product}.
-${idea || "Develop a unique professional creative concept."}
-SCENE DIRECTION:
-1. Powerful cinematic opening.
-2. Beautiful visual reveal.
-3. Showcase the main subject.
-4. Premium cinematic close-ups.
-5. Strong emotional final scene.
-CAMERA:
-- Smooth tracking shots and dynamic camera movements.
-- Professional depth of field, realistic motion and lighting.
-PRODUCTION QUALITY:
-- ${quality} target resolution, sharp focus and realistic details.
-- Consistent subjects, visual continuity and professional editing.
-DELIVERABLES:
-1. Complete creative concept and detailed scene-by-scene prompts.
-2. Camera, lighting, music and sound design directions.
-3. English voice-over script and final advertising message.
-4. Negative prompt to avoid visual errors.
-IMPORTANT:
-Maintain consistent subjects, realistic details and professional production quality throughout.
-Create an unforgettable professional production.`;
-      document.getElementById("output").textContent=prompt;
-      document.getElementById("output").style.display="block";
-      document.getElementById("copy").style.display="block";
-    }
-    function copyResult() {
-      const text=document.getElementById("output").textContent;
-      if(navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(()=>alert("Prompt copied successfully!"))
-          .catch(()=>alert("Please select and copy the prompt manually."));
-      } else { alert("Please select and copy the prompt manually."); }
-    }
-  </script>
+
+  <p class="note" id="disclaimer">
+    Note: This tool creates detailed production prompts. It does not generate
+    the finished video or guarantee native 4K output; use a video-generation
+    or editing tool that supports your chosen resolution.
+  </p>
+
+  <footer>AI Creative Studio Pro · Your ideas, professionally crafted.</footer>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+let language = "en";
+
+const translations = {
+ en:{
+  subtitle:"Create professional AI video, image and advertising prompts.",
+  formTitle:"Creative Project Generator",
+  productLabel:"Project or Product Name",
+  typeLabel:"Content Type",
+  styleLabel:"Visual Style",
+  durationLabel:"Duration",
+  platformLabel:"Platform",
+  qualityLabel:"Quality Target",
+  ideaLabel:"Additional Instructions",
+  productPlaceholder:"Example: Luxury Watch",
+  ideaPlaceholder:"Describe your creative idea, audience, product features, offer or call to action...",
+  generate:"Generate Professional Prompt",
+  resultTitle:"Your Production Prompt",
+  copy:"Copy Prompt",
+  download:"Download TXT",
+  reset:"New Project",
+  copied:"Prompt copied successfully.",
+  copyFail:"Copy was blocked by the browser. Select the prompt and copy it manually.",
+  empty:"Please enter a project or product name.",
+  disclaimer:"Note: This tool creates detailed production prompts. It does not generate the finished video or guarantee native 4K output; use a video-generation or editing tool that supports your chosen resolution.",
+  langButton:"العربية"
+ },
+ ar:{
+  subtitle:"أنشئ برومبتات احترافية للفيديو والصور والإعلانات بالذكاء الاصطناعي.",
+  formTitle:"مولّد المشاريع الإبداعية",
+  productLabel:"اسم المشروع أو المنتج",
+  typeLabel:"نوع المحتوى",
+  styleLabel:"النمط البصري",
+  durationLabel:"المدة",
+  platformLabel:"المنصة",
+  qualityLabel:"الجودة المستهدفة",
+  ideaLabel:"تعليمات إضافية",
+  productPlaceholder:"مثال: ساعة فاخرة",
+  ideaPlaceholder:"اكتب فكرتك والجمهور المستهدف ومميزات المنتج والعرض أو الدعوة لاتخاذ إجراء...",
+  generate:"إنشاء برومبت احترافي",
+  resultTitle:"برومبت الإنتاج الخاص بك",
+  copy:"نسخ البرومبت",
+  download:"تنزيل TXT",
+  reset:"مشروع جديد",
+  copied:"تم نسخ البرومبت بنجاح.",
+  copyFail:"تعذّر النسخ تلقائياً. حدّد النص وانسخه يدوياً.",
+  empty:"يرجى إدخال اسم المشروع أو المنتج.",
+  disclaimer:"ملاحظة: تنشئ هذه الأداة برومبتات إنتاج مفصلة، ولا تنشئ الفيديو النهائي ولا تضمن إخراجاً أصلياً بدقة 4K؛ استخدم أداة توليد أو تحرير تدعم الدقة التي اخترتها.",
+  langButton:"English"
+ }
+};
+
+function setLanguage(next){
+ language=next;
+ const t=translations[language];
+
+ document.documentElement.lang=language;
+ document.documentElement.dir=language==="ar"?"rtl":"ltr";
+
+ [
+  "subtitle","formTitle","productLabel","typeLabel",
+  "styleLabel","durationLabel","platformLabel",
+  "qualityLabel","ideaLabel","generateBtn","resultTitle",
+  "copyBtn","downloadBtn","resetBtn","disclaimer","langBtn"
+ ].forEach(id=>{
+  const key={
+   generateBtn:"generate",
+   copyBtn:"copy",
+   downloadBtn:"download",
+   resetBtn:"reset",
+   langBtn:"langButton"
+  }[id]||id;
+
+  $(id).textContent=t[key];
+ });
+
+ $("product").placeholder=t.productPlaceholder;
+ $("idea").placeholder=t.ideaPlaceholder;
+}
+
+$("langBtn").addEventListener("click",()=>{
+ setLanguage(language==="en"?"ar":"en");
+});
+
+function buildPrompt(data){
+
+ const duration=Number(data.duration);
+ const count=duration<=15?3:duration<=30?5:duration<=45?6:duration<=60?7:9;
+
+ const sceneNames=[
+  [
+   "Hook / visual opening",
+   "Problem or desire",
+   "Product reveal",
+   "Key feature close-up",
+   "Lifestyle / emotional payoff",
+   "Proof / detail shot",
+   "Call to action",
+   "Hero end frame",
+   "Brand sign-off"
+  ],
+  [
+   "افتتاحية جذابة",
+   "إبراز الحاجة أو المشكلة",
+   "الكشف عن المنتج",
+   "لقطة قريبة لميزة أساسية",
+   "مشهد استخدام مؤثر",
+   "تفاصيل وإثبات الجودة",
+   "دعوة لاتخاذ إجراء",
+   "لقطة ختامية للمنتج",
+   "ختام العلامة التجارية"
+  ]
+ ];
+
+ const scenes=[];
+
+ for(let i=0;i<count;i++){
+
+  const start=Math.round(i*duration/count);
+  const end=Math.round((i+1)*duration/count);
+  const name=sceneNames[0][Math.min(i,8)];
+
+  const desc=[
+   "Open with an arresting visual hook that makes viewers stop scrolling. Establish mood and context immediately.",
+   "Show the audience need, frustration or aspiration that the product addresses. Keep the storytelling concise.",
+   "Reveal "+data.product+" as the hero subject with a premium, visually clear product shot.",
+   "Capture one important feature using macro detail, realistic materials and controlled camera movement.",
+   "Show a believable lifestyle moment demonstrating how the product fits naturally into the customer's life.",
+   "Highlight craftsmanship, design or another relevant benefit. Do not invent specifications, certifications or claims.",
+   "Build desire with a memorable hero shot and a clear benefit-led message.",
+   "Finish with a clean product composition, readable brand space and a strong call to action.",
+   "End with a polished brand sign-off and a visually consistent final frame."
+  ][Math.min(i,8)];
+
+  scenes.push(
+   `${String(i+1).padStart(2,"0")}. ${name} (${start}s–${end}s)\nVisual direction: ${desc}\nCamera: smooth controlled movement, intentional framing, natural motion and professional depth of field.\nOn-screen text: short, legible and correctly spelled; keep clear space around the subject.`
+  );
+ }
+
+ const ar=language==="ar";
+
+ const lines=ar?[
+  "AI CREATIVE STUDIO PRO — موجز إنتاج احترافي",
+  `المشروع / المنتج: ${data.product}`,
+  `نوع المحتوى: ${data.type}`,
+  `النمط البصري: ${data.style}`,
+  `المدة: ${duration} ثانية`,
+  `المنصة: ${data.platform}`,
+  `الدقة المستهدفة: ${data.quality}`,
+
+  "الفكرة الإبداعية: أنشئ إعلاناً أو فيديو أصلياً جذاباً يبرز قيمة المنتج ويشد انتباه الجمهور بسرعة. حافظ على شكل المنتج الحقيقي ولا تخترع مواصفات غير مؤكدة.",
+
+  "توجيه المشاهد:",
+
+  ...scenes.map(s=>
+   s.replace("Visual direction:","التوجيه البصري:")
+    .replace("Camera:","الكاميرا:")
+    .replace("On-screen text:","النص على الشاشة:")
+  ),
+
+  "التصوير والإضاءة:\n- لقطات سينمائية ثابتة وواضحة وحركة كاميرا ناعمة.\n- إضاءة واقعية متناسقة مع خامة المنتج.\n- عمق ميدان احترافي وتركيز حاد على العنصر الرئيسي.\n- حافظ على استمرارية شكل المنتج والألوان بين جميع المشاهد.",
+
+  "التعليق الصوتي باللغة الإنجليزية:\n“Meet "+data.product+". Thoughtfully designed to fit your life. Discover the details, experience the difference, and make it yours today.”\nUse a confident, warm professional male voice, natural pacing and clear pronunciation. Adapt claims to verified product facts.",
+
+  "الموسيقى والصوت:\nموسيقى سينمائية مرخّصة أو أصلية، مؤثرات صوتية دقيقة ومتزامنة مع الانتقالات، مع إبقاء التعليق الصوتي واضحاً.",
+
+  "رسالة الإعلان النهائية:\nDiscover "+data.product+" — make every moment count. Shop now.",
+
+  "Negative Prompt:\nblurry image, low resolution, distorted product, altered logo, incorrect text, misspelled words, extra objects, warped geometry, flicker, jitter, unnatural motion, inconsistent lighting, duplicate items, fake specifications, watermark.",
+
+  `تعليمات إضافية من المستخدم: ${data.idea||"لا توجد."}`,
+
+  "متطلبات التسليم:\n- التزم بنسبة أبعاد المنصة المختارة.\n- استهدف الدقة المحددة إذا كانت أداة الإنتاج تدعمها.\n- حافظ على اتساق المنتج والمشهد والألوان.\n- صدّر النسخة النهائية بعد مراجعة النصوص والصوت والتفاصيل."
+
+ ]:[
+  "AI CREATIVE STUDIO PRO — PROFESSIONAL PRODUCTION BRIEF",
+
+  `PROJECT / PRODUCT: ${data.product}`,
+  `CONTENT TYPE: ${data.type}`,
+  `VISUAL STYLE: ${data.style}`,
+  `DURATION: ${duration} seconds`,
+  `PLATFORM / ASPECT RATIO: ${data.platform}`,
+  `TARGET RESOLUTION: ${data.quality}`,
+
+  "CREATIVE CONCEPT:\nCreate an original, engaging production that communicates the product's real value and captures attention immediately. Keep the product faithful to its actual appearance. Do not invent specifications, certifications or performance claims.",
+
+  "SCENE-BY-SCENE DIRECTION:",
+
+  ...scenes,
+
+  "CAMERA AND LIGHTING:\n- Cinematic, stable shots with smooth intentional camera movement.\n- Realistic lighting that respects the product's materials and color.\n- Professional depth of field and sharp focus on the hero subject.\n- Maintain product shape, logo, colors and continuity across every shot.",
+
+  "ENGLISH VOICE-OVER SCRIPT:\n“Meet "+data.product+". Thoughtfully designed to fit your life. Discover the details, experience the difference, and make it yours today.”\nVoice: confident, warm, professional male voice; natural pacing and clear pronunciation. Adapt all claims to verified product facts.",
+
+  "MUSIC AND SOUND DESIGN:\nUse licensed or original cinematic music, subtle synchronized sound effects and clean voice-over mixing. Keep narration intelligible.",
+
+  "FINAL ADVERTISING MESSAGE:\nDiscover "+data.product+" — make every moment count. Shop now.",
+
+  "NEGATIVE PROMPT:\nblurry image, low resolution, distorted product, altered logo, incorrect text, misspelled words, extra objects, warped geometry, flicker, jitter, unnatural motion, inconsistent lighting, duplicate items, fake specifications, watermark.",
+
+  `ADDITIONAL USER INSTRUCTIONS: ${data.idea||"None provided."}`,
+
+  "DELIVERY REQUIREMENTS:\n- Match the selected platform aspect ratio.\n- Target the selected resolution if supported by the generation tool.\n- Preserve product, scene and color continuity.\n- Review text, audio and visual details before final export."
+ ];
+
+ return lines.join("\n\n");
+}
+
+$("generatorForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const product=$("product").value.trim();
+
+ if(!product){
+  alert(translations[language].empty);
+  $("product").focus();
+  return;
+ }
+
+ const data={
+  product,
+  type:$("type").value,
+  style:$("style").value,
+  duration:$("duration").value,
+  platform:$("platform").value,
+  quality:$("quality").value,
+  idea:$("idea").value.trim()
+ };
+
+ $("output").textContent=buildPrompt(data);
+ $("resultSection").style.display="block";
+ $("status").textContent="";
+
+ $("resultSection").scrollIntoView({
+  behavior:"smooth",
+  block:"start"
+ });
+});
+
+$("copyBtn").addEventListener("click",async()=>{
+
+ const text=$("output").textContent;
+
+ try{
+
+  if(navigator.clipboard && window.isSecureContext){
+   await navigator.clipboard.writeText(text);
+  }else{
+
+   const area=document.createElement("textarea");
+   area.value=text;
+   area.style.position="fixed";
+   area.style.opacity="0";
+
+   document.body.appendChild(area);
+   area.select();
+
+   const ok=document.execCommand("copy");
+   area.remove();
+
+   if(!ok)throw new Error("copy failed");
+  }
+
+  $("status").textContent=translations[language].copied;
+
+ }catch(err){
+
+  $("status").textContent=translations[language].copyFail;
+ }
+
+});
+
+$("downloadBtn").addEventListener("click",()=>{
+
+ const blob=new Blob(
+  [$("output").textContent],
+  {type:"text/plain;charset=utf-8"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="AI-Creative-Studio-Prompt.txt";
+
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ URL.revokeObjectURL(url);
+});
+
+$("resetBtn").addEventListener("click",()=>{
+
+ $("generatorForm").reset();
+ $("resultSection").style.display="none";
+ $("status").textContent="";
+ $("product").focus();
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+});
+
+setLanguage("en");
+
+})();
+</script>
 </body>
 </html>
